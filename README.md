@@ -12,7 +12,7 @@ cd post_install_scripts
 NAMESPACE=<namespace> ./ecr.sh
 ```
 
-Cluster is deployed without an ingress controller (`traefik` by default), so we need to install NGINX (info on setting up `kubectl`)
+Cluster is deployed without an ingress controller (`traefik` by default), so we need to install NGINX (info on setting up `kubectl` #setting-up-kubectl)
 ```
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
