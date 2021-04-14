@@ -19,7 +19,7 @@ TOKEN=`aws ecr --region=$REGION get-authorization-token --output text \
 
 kubectl delete secret --ignore-not-found $SECRET_NAME
 kubectl create secret docker-registry $SECRET_NAME \
-    --namespace=demo \
+    --namespace=${NAMESPACE} \
     --docker-server=https://${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com \
     --docker-username=AWS \
     --docker-password="${TOKEN}" \

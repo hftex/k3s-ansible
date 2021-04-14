@@ -7,6 +7,11 @@ ansible-playbook site.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass
 
 `ecr-credential-helper` doesn't work with k3s, as a workaround an authorization token is injected into the cluster as a k8s secret. This is done by running the `post_install_scripts/ecr.sh` script. Possibly a cron job is needed (to be investigated).
 
+```
+cd post_install_scripts
+NAMESPACE=<namespace> ./ecr.sh
+```
+
 Fetch the kubeconfig
 ```
 scp -i ~/.ssh/fidexx/office.rsa -r prime@<master-node>:~/.kube/config ~/.kube/k3s_config
