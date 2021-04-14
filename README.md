@@ -12,22 +12,23 @@ cd post_install_scripts
 NAMESPACE=<namespace> ./ecr.sh
 ```
 
-Fetch the kubeconfig
-```
-scp -i ~/.ssh/fidexx/office.rsa -r prime@<master-node>:~/.kube/config ~/.kube/k3s_config
-```
-
-Set kubeconfig in order to use `kubectl` and `k9s`
-```
-export KUBECONFIG=~/.kube/k3s_config
-```
-
-Cluster is deployed without an ingress controller (`traefik` by default), so we need to install NGINX.
+Cluster is deployed without an ingress controller (`traefik` by default), so we need to install NGINX (info on setting up `kubectl`)
 ```
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 
 helm install ingress-nginx ingress-nginx/ingress-nginx
+```
+
+### Setting up kubectl
+Fetch the kubeconfig from master node, example for current setup:
+```
+scp -i ~/.ssh/fidexx/office.rsa -r prime@zprime-09.hftex:~/.kube/config ~/.kube/k3s_config
+```
+
+Set kubeconfig in order to use `kubectl` and `k9s`
+```
+export KUBECONFIG=~/.kube/k3s_config
 ```
 
 ## Tear down a cluster
