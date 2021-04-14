@@ -1,60 +1,33 @@
-# Build a Kubernetes cluster using k3s via Ansible
+A fork of https://github.com/k3s-io/k3s-ansible
 
-Author: <https://github.com/itwars>
+# Usage
 
-## K3s Ansible Playbook
-
-Build a Kubernetes cluster using Ansible with k3s. The goal is easily install a Kubernetes cluster on machines running:
-
-- [X] Debian
-- [X] Ubuntu
-- [X] CentOS
-
-on processor architecture:
-
-- [X] x64
-- [X] arm64
-- [X] armhf
-
-## System requirements
-
-Deployment environment must have Ansible 2.4.0+
-Master and nodes must have passwordless SSH access
-
-## Usage
-
-First create a new directory based on the `sample` directory within the `inventory` directory:
-
-```bash
-cp -R inventory/sample inventory/my-cluster
+## Deploy a cluster
+```
+ansible-playbook site.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass
 ```
 
-Second, edit `inventory/my-cluster/hosts.ini` to match the system information gathered above. For example:
+`ecr-credential-helper` doesn't work with k3s, as a workaround an authorization token is injected into the cluster as a k8s secret. This is done by running the `post_install_scripts/ecr.sh` script. Possibly a cron job is needed (to be investigated).
 
-```bash
-[master]
-192.16.35.12
-
-[node]
-192.16.35.[10:11]
-
-[k3s_cluster:children]
-master
-node
+Fetch the kubeconfig
+```
+scp -i ~/.ssh/fidexx/office.rsa -r prime@zprime-09.hftex:~/.kube/config ~/.kube/k3s_config
 ```
 
-If needed, you can also edit `inventory/my-cluster/group_vars/all.yml` to match your environment.
-
-Start provisioning of the cluster using the following command:
-
-```bash
-ansible-playbook site.yml -i inventory/my-cluster/hosts.ini
+Set kubeconfig in order to use `kubectl` and `k9s`
+```
+export KUBECONFIG=~/.kube/k3s_config
 ```
 
-## Kubeconfig
+Cluster is deployed without ingress controller (`traefik` by default), so we need to install NGINX.
+```
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
 
-To get access to your **Kubernetes** cluster just
+helm install ingress-nginx ingress-nginx/ingress-nginx
+```
 
-```bash
-scp debian@master_ip:~/.kube/config ~/.kube/config
+## Tear down a cluster
+```
+ansible-playbook reset.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass
 ```
