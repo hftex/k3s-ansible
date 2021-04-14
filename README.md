@@ -1,7 +1,5 @@
 A fork of https://github.com/k3s-io/k3s-ansible
 
-# Usage
-
 ## Deploy a cluster
 ```
 ansible-playbook site.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass
@@ -11,7 +9,7 @@ ansible-playbook site.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass
 
 Fetch the kubeconfig
 ```
-scp -i ~/.ssh/fidexx/office.rsa -r prime@zprime-09.hftex:~/.kube/config ~/.kube/k3s_config
+scp -i ~/.ssh/fidexx/office.rsa -r prime@<master-node>:~/.kube/config ~/.kube/k3s_config
 ```
 
 Set kubeconfig in order to use `kubectl` and `k9s`
@@ -19,7 +17,7 @@ Set kubeconfig in order to use `kubectl` and `k9s`
 export KUBECONFIG=~/.kube/k3s_config
 ```
 
-Cluster is deployed without ingress controller (`traefik` by default), so we need to install NGINX.
+Cluster is deployed without an ingress controller (`traefik` by default), so we need to install NGINX.
 ```
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
@@ -30,4 +28,11 @@ helm install ingress-nginx ingress-nginx/ingress-nginx
 ## Tear down a cluster
 ```
 ansible-playbook reset.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass
+```
+
+Sporadically firewall can cause issues when redeploying the cluster (`coredns` pod is in failed state), to solve this flush the `iptables` and restart docker in order to populate the rules again.
+
+```
+sudo iptables -F
+sudo systemctl restart docker
 ```
