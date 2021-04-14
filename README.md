@@ -23,7 +23,7 @@ helm install ingress-nginx ingress-nginx/ingress-nginx
 ### Setting up kubectl
 Fetch the kubeconfig from master node, example for current setup:
 ```
-scp -i ~/.ssh/fidexx/office.rsa -r prime@zprime-09.hftex:~/.kube/config ~/.kube/k3s_config
+scp -i ~/.ssh/office.rsa -r prime@zprime-09.hftex:~/.kube/config ~/.kube/k3s_config
 ```
 
 Set kubeconfig in order to use `kubectl` and `k9s`
