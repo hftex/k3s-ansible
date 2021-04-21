@@ -12,7 +12,7 @@ Run post-install setup script
 
 Script will fetch the `.kubeconfig`, set env var in order to use `kubectl` and `k9s`
 ```
-export KUBECONFIG=~/.kube/k3s_config
+scp -i ~/.ssh/office.rsa -r prime@zprime-09.hftex:~/.kube/config ~/.kube/k3s_config
 ```
 
 ## Tear down a cluster
