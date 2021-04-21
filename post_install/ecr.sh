@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # From https://stackoverflow.com/a/55658863
 # Additional info on https://github.com/k3s-io/k3s/issues/1427
 
@@ -16,7 +18,7 @@ TOKEN=`aws ecr --region=$REGION get-authorization-token --output text \
 #  Create or replace registry secret
 #
 
-
+kubectl create namespace $NAMESPACE
 kubectl delete secret --ignore-not-found $SECRET_NAME
 kubectl create secret docker-registry $SECRET_NAME \
     --namespace=${NAMESPACE} \
