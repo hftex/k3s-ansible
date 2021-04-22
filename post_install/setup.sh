@@ -9,8 +9,6 @@ export KUBECONFIG=~/.kube/k3s_config
 # Possibly a cron job is needed (to be investigated).
 export NAMESPACE=staging
 
-./ecr.sh
-
 # INGRESS
 # Cluster is deployed without an ingress controller (`traefik` by default), so we need to install NGINX.
 

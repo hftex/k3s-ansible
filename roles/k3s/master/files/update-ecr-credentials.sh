@@ -3,6 +3,8 @@
 # From https://stackoverflow.com/a/55658863
 # Additional info on https://github.com/k3s-io/k3s/issues/1427
 
+PATH="/usr/local/bin:/usr/bin:/bin"
+
 ACCOUNT=980925581578
 REGION=us-east-1
 SECRET_NAME=${REGION}-ecr-registry
@@ -19,7 +21,7 @@ TOKEN=`aws ecr --region=$REGION get-authorization-token --output text \
 #
 
 kubectl create namespace $NAMESPACE
-kubectl delete secret --ignore-not-found $SECRET_NAME
+kubectl delete secret --namespace=${NAMESPACE} --ignore-not-found $SECRET_NAME
 kubectl create secret docker-registry $SECRET_NAME \
     --namespace=${NAMESPACE} \
     --docker-server=https://${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com \

@@ -77,3 +77,22 @@
     src: /usr/local/bin/k3s
     dest: /usr/local/bin/crictl
     state: link
+
+- name: Copy ECR script
+  copy:
+    src: update-ecr-credentials.sh
+    dest: /usr/local/bin/update-ecr-credentials.sh
+    mode: u=rwx,o=x
+  tags: cron
+  become: yes
+
+- name: Create a cron for updating ECR credentials
+  ansible.builtin.cron:
+    name: update ECR credentials
+    minute: "0"
+    hour: "*/11"
+    user: prime
+    job: "NAMESPACE=staging /usr/local/bin/update-ecr-credentials.sh > /tmp/err.log 2>&1"
+    cron_file: update-ecr-credentials
+  tags: cron
+  become: yes
