@@ -34,7 +34,13 @@ helm install \
 
 sleep 15
 
-kubectl apply -f resources/issuer-staging.yaml
-kubectl apply -f resources/issuer-prod.yaml
+kubectl apply -f resources/issuer-staging.yaml -n $NAMESPACE
+kubectl apply -f resources/issuer-prod.yaml -n $NAMESPACE
 
 export KUBECONFIG=''
+
+echo "\
+####################################################
+DON'T FORGET TO UPDATE KUBECONFIG ON GITHUB RUNNERS!
+####################################################\
+"
