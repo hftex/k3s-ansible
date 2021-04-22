@@ -5,9 +5,6 @@ export MASTER_NODE=zprime-09.hftex
 scp -i ~/.ssh/fidexx/office.rsa -r prime@$MASTER_NODE:~/.kube/config ~/.kube/k3s_config
 
 export KUBECONFIG=~/.kube/k3s_config
-# ecr-credential-helper doesn't work with k3s, as a workaround an authorization token is injected into the cluster as a k8s secret
-# Possibly a cron job is needed (to be investigated).
-export NAMESPACE=staging
 
 # INGRESS
 # Cluster is deployed without an ingress controller (`traefik` by default), so we need to install NGINX.
@@ -31,6 +28,8 @@ helm install \
   --set installCRDs=true
 
 sleep 15
+
+export NAMESPACE=staging
 
 kubectl apply -f resources/issuer-staging.yaml -n $NAMESPACE
 kubectl apply -f resources/issuer-prod.yaml -n $NAMESPACE
