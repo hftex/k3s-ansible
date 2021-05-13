@@ -15,6 +15,18 @@ Script will fetch the `.kubeconfig`, set env var in order to use `kubectl` and `
 export KUBECONFIG=~/.kube/k3s_config
 ```
 
+## Add a new node
+
+First obtain the node token by running the following command on master node:
+```
+prime@zprime-09:~$ sudo cat /var/lib/rancher/k3s/server/node-token
+<token>
+```
+
+```
+ansible-playbook site.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass --limit <node-to-add> -e "token_override='<token>'"
+```
+
 ## Tear down a cluster
 ```
 ansible-playbook reset.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass
