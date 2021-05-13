@@ -27,6 +27,14 @@ prime@zprime-09:~$ sudo cat /var/lib/rancher/k3s/server/node-token
 ansible-playbook site.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass --limit <node-to-add> -e "token_override='<token>'"
 ```
 
+## Remove a node
+
+```
+ansible-playbook reset.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass --limit <node-to-remove>
+```
+
+After this manually delete the node from cluster using `kubectl` or `k9s`
+
 ## Tear down a cluster
 ```
 ansible-playbook reset.yml -i inventory/prime-cluster/hosts.yml --ask-become-pass
