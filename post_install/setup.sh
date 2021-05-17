@@ -39,5 +39,18 @@ export KUBECONFIG=''
 echo "\
 ####################################################
 DON'T FORGET TO UPDATE KUBECONFIG ON GITHUB RUNNERS!
-####################################################\
+####################################################
+
+Execute:
+
+cd cm/github-runners
+
+ansible-vault edit roles/k8s/files/office.kubeconfig  --vault-password-file ~/.ansible/vault-secret
+
+ansible-playbook
+  -i inventories/github_runners.yml
+  github_runners.yml
+  --tags kubeconfig
+  --ask-become-pass
+  --vault-password-file ~/.ansible/vault-secret
 "
